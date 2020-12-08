@@ -1,3 +1,6 @@
 [submodule "Object-Detection-with-Unity"]
 	path = Object-Detection-with-Unity
 	url = https://github.com/DenBrand/Object-Detection-with-Unity
+[submodule "Object-Detection-with-ViZDoom"]
+	path = Object-Detection-with-ViZDoom
+	url = https://github.com/DenBrand/Object-Detection-with-ViZDoom
