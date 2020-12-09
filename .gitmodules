@@ -4,3 +4,6 @@
 [submodule "Object-Detection-with-ViZDoom"]
 	path = Object-Detection-with-ViZDoom
 	url = https://github.com/DenBrand/Object-Detection-with-ViZDoom
+[submodule "ViZDoom"]
+	path = ViZDoom
+	url = https://github.com/mwydmuch/ViZDoom

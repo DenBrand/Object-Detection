@@ -9,9 +9,14 @@ if __name__ == '__main__':
                                         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('-s',
                         default='darknet/custom_data/images',
-                        help='source image directory', 
-                        metavar='source',
-                        dest='src')
+                        help='source image directory',
+                        metavar='image source',
+                        dest='imgsrc')
+    parser.add_argument('-l',
+                        default='darknet/custom_data/labels',
+                        help='source label directory',
+                        metavar='label source',
+                        dest='lblsrc')
     parser.add_argument('-d',
                         default='darknet/custom_data',
                         help='destination directory for train.txt and test.txt',
@@ -25,18 +30,30 @@ if __name__ == '__main__':
     parser.add_argument('-n',
                         default=False,
                         action='store_true',
-                        help='if values in label txts should be normalized / divided by image sizes',
+                        help='if values in label txts should be normalized (divided by image sizes)',
                         dest='normalize')
 
     args = parser.parse_args()
 
-    file_names = os.listdir(args.src)
-    image_names = [file for file in file_names if file[-3:] == 'jpg']
-    txt_names = [file for file in file_names if file[-3:] == 'txt']
+    image_names = os.listdir(args.imgsrc)
+    image_names = [file for file in image_names if file[-3:] == 'jpg' and file[-12:-4] != '_labeled']
+    txt_names = os.listdir(args.lblsrc)
+    txt_names = [file for file in txt_names if file[-3:] == 'txt']
 
-    print('CREATING train.txt AND test.txt')
+    print('DELETING OLD train.txt AND test.txt ...')
+    if os.path.exists(args.dst + '/train.txt'):
 
-    # randomly pick wished portion of data as training data
+        os.remove(args.dst + '/train.txt')
+
+    if os.path.exists(args.dst + '/test.txt'):
+
+        os.remove(args.dst + '/test.txt')
+
+    print('done.')
+
+    print('CREATING train.txt AND test.txt ...')
+
+    # randomly pick desired portion of data as training data
     number_training_images = (int)(len(image_names) * args.prtn / 100)
     for _ in range(number_training_images):
 
@@ -48,7 +65,7 @@ if __name__ == '__main__':
 
         image_names.remove(image_names[random_idx])
 
-    print(args.dst + '/train.txt has been created!')
+    print('\t' + args.dst + '/train.txt CREATED.')
 
     # declare the rest as test data
     with open(args.dst + '/test.txt', 'a') as file:
@@ -57,11 +74,13 @@ if __name__ == '__main__':
 
             file.write('custom_data/images/' + image + '\n')
 
-    print(args.dst + '/test.txt has been created!')
+    print('\t' + args.dst + '/test.txt CREATED.')
+    print('done.')
 
+    # image normalization
     if args.normalize:
 
-        print('NORMALIZING VALUES IN LABEL FILES')
+        print('NORMALIZING VALUES IN LABEL FILES ...')
 
         for txt_name in txt_names:
 
@@ -93,4 +112,4 @@ if __name__ == '__main__':
 
                     file.write(line + '\n')
 
-        print('Values have been normalized!')
+        print('done.')
