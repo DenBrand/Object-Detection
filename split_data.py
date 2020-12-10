@@ -8,17 +8,17 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(   description='split data into training and test data',
                                         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('-s',
-                        default='darknet/custom_data/images',
+                        default='custom_data/images',
                         help='source image directory',
                         metavar='image source',
                         dest='imgsrc')
     parser.add_argument('-l',
-                        default='darknet/custom_data/labels',
+                        default='custom_data/labels',
                         help='source label directory',
                         metavar='label source',
                         dest='lblsrc')
     parser.add_argument('-d',
-                        default='darknet/custom_data',
+                        default='custom_data',
                         help='destination directory for train.txt and test.txt',
                         metavar='destination',
                         dest='dst')
