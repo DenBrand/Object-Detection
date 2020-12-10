@@ -30,7 +30,7 @@ if __name__ == '__main__':
     parser.add_argument('-n',
                         default=False,
                         action='store_true',
-                        help='if values in label txts should be normalized (divided by image sizes)',
+                        help='if values in label txts should be normalized (divided by image sizes) if they aren\'t already',
                         dest='normalize')
 
     args = parser.parse_args()
