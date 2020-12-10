@@ -61,7 +61,7 @@ if __name__ == '__main__':
 
         with open(args.dst + '/train.txt', 'a') as file:
 
-            file.write('custom_data/images/' + image_names[random_idx] + '\n')
+            file.write('../custom_data/images/' + image_names[random_idx] + '\n')
 
         image_names.remove(image_names[random_idx])
 
@@ -72,7 +72,7 @@ if __name__ == '__main__':
     
         for image in image_names:
 
-            file.write('custom_data/images/' + image + '\n')
+            file.write('../custom_data/images/' + image + '\n')
 
     print('\t' + args.dst + '/test.txt CREATED.')
     print('done.')
