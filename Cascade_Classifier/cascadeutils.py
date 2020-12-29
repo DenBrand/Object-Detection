@@ -76,7 +76,3 @@ def CreatePosTxtAndFilterNegsOut(   class_id,
                 src_path = label_file_data[0]
                 dest_path = label_file_data[0].replace('positives/', 'negatives/')
                 os.replace(src_path, dest_path)
-
-if __name__ == '__main__':
-
-    CreateNegTxt()
