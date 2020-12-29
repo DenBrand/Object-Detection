@@ -130,3 +130,6 @@ dmypy.json
 
 # darknet repository
 darknet/
+
+# opencv for linux
+Cascade_Classifier/opencv/

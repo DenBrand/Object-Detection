@@ -1,8 +1,9 @@
 import os
+import os.path
 import cv2
 
-def CreateNegTxt(   negs_dir_path='custom_data/negatives/',
-                    negs_txt_path='custom_data/neg.txt'):
+def CreateNegTxt(   negs_dir_path=os.path.join('custom_data', 'negatives'),
+                    negs_txt_path=os.path.join('custom_data', 'neg.txt')):
 
     negs_paths = os.listdir(negs_dir_path)
     negs_paths = [negs_dir_path + path for path in negs_paths]
@@ -12,13 +13,13 @@ def CreateNegTxt(   negs_dir_path='custom_data/negatives/',
             negTxt.write(path + '\n')
 
 def CreatePosTxtAndFilterNegsOut(   class_id,
-                                    poss_dir_path='custom_data/positives/',
-                                    labels_dir_path='custom_data/labels/',
-                                    negs_dir_path='custom_data/negatives/',
-                                    poss_txt_path='custom_data/pos.txt'):
+                                    poss_dir_path=os.path.join('custom_data', 'positives'),
+                                    labels_dir_path=os.path.join('custom_data', 'labels'),
+                                    negs_dir_path=os.path.join('custom_data', 'negatives'),
+                                    poss_txt_path=os.path.join('custom_data', 'pos.txt')):
 
     labels_paths = os.listdir(labels_dir_path)
-    labels_paths = [labels_dir_path + path for path in labels_paths]
+    labels_paths = [os.path.join(labels_dir_path, path) for path in labels_paths]
 
     # iterate over all label files
     all_label_data = []
@@ -26,7 +27,7 @@ def CreatePosTxtAndFilterNegsOut(   class_id,
 
         with open(labels_path, 'r') as labels:
 
-            image_path = labels_path.replace(labels_dir_path, poss_dir_path).replace('txt', 'jpg')
+            image_path = labels_path.replace(labels_dir_path, poss_dir_path).replace('.txt', '.jpg')
             image = cv2.imread(image_path)
             im_width, im_height, _ = image.shape
             #im_width, im_height = 320, 320
@@ -53,7 +54,7 @@ def CreatePosTxtAndFilterNegsOut(   class_id,
                     print(err)
                     print(image_path + ' will be transfered to ' + negs_dir_path)
                     src_path = image_path
-                    dest_path = image_path.replace('positives/', 'negatives/')
+                    dest_path = image_path.replace('positives', 'negatives')
                     os.replace(src_path, dest_path)
                     line_tail.append('')
 
@@ -74,5 +75,9 @@ def CreatePosTxtAndFilterNegsOut(   class_id,
             else:
                 print(label_file_data[0] + ' will be transfered to ' + negs_dir_path)
                 src_path = label_file_data[0]
-                dest_path = label_file_data[0].replace('positives/', 'negatives/')
+                dest_path = label_file_data[0].replace('positives', 'negatives')
                 os.replace(src_path, dest_path)
+
+if __name__ == '__main__':
+
+    CreatePosTxtAndFilterNegsOut(0)
