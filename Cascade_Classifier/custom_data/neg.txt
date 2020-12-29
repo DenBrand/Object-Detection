@@ -1,0 +1,7 @@
+custom_data/negatives/2020-12-29_1h19min23sec7061.jpg
+custom_data/negatives/2020-12-29_1h19min31sec2297.jpg
+custom_data/negatives/2020-12-29_1h19min35sec279.jpg
+custom_data/negatives/2020-12-29_1h19min40sec1154.jpg
+custom_data/negatives/2020-12-29_1h19min43sec1659.jpg
+custom_data/negatives/2020-12-29_1h19min57sec9831.jpg
+custom_data/negatives/2020-12-29_1h20min19sec8513.jpg
