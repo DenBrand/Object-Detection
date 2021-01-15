@@ -1,0 +1,15 @@
+TODOS:
+- handle TODOS in cascadeutils.py
+- debug cascadeutils.py
+- hopefully gather data from friends
+
+- when training_data_generation for cascade classifier works:
+	- train cascade classifier
+	- evaluate its performance
+	- if acceptable:
+		- tell Tobi and ask for next steps (enroll bachelors thesis?)
+	- else:
+		- ask Tobi (maybe another, simpler model?)
+
+- pimp unity game
+- game should encode user name in json file name
