@@ -104,56 +104,69 @@ def FetchNewTrainingData():
 
     # helping function
     def FetchData(run_data):
-        pos_txt_path = os.path.join('custom_data', 'pos.txt')
-        neg_txt_path = os.path.join('custom_data', 'neg.txt')
+        pos_txt_name = 'pos.txt'
+        neg_txt_name = 'neg.txt'
 
         for detectable_class in DETECTABLE_CLASSES:
-            if detectable_class in run_data.keys:
+            if detectable_class in run_data.keys():
 
+                # get positives and negatives of this detectable class
                 positives = run_data[detectable_class]['positives']
                 negatives = run_data[detectable_class]['negatives']
 
                 # fetch positives
                 positives_dict = {}
                 for pos_entry in positives:
-                    if not pos_entry['path'] in positives_dict.keys:
+                    if not pos_entry['path'] in positives_dict.keys():
                         positives_dict[pos_entry['path']] = [pos_entry['boxEntry']]
 
                     else:
                         positives_dict[pos_entry['path']].append(pos_entry['boxEntry'])
 
-                # Ordnerstruktur falls nicht existent für jew. Detectable Klasse erstellen und Daten DORT hin schreiben.
-                # Nicht einfach in custom_data/cascade_classifier/[pos/neg].txt!!!
-                # Stattdessen in custom_data/cascade_classifier/<Klassenname>_train_data/<pos/neg>.txt
+                # ensure directory for this detectable class exists
+                os.makedirs(os.path.join(   detectable_class + '_data', 'positives'),
+                                            exist_ok=True)
+                os.makedirs(os.path.join(   detectable_class + '_data', 'negatives'),
+                                            exist_ok=True)
 
                 # finally write positive entries in pos.txt
-                with open(pos_txt_path, 'a') as pos_txt:
+                with open(os.path.join(detectable_class + '_data', pos_txt_name), 'a+') as pos_txt:
                     for path, entries in positives_dict.items():
                         num_of_entries = len(entries)
 
                         line = path + ' ' + str(num_of_entries)
                         for entry in entries:
-                            line += ' ' + str(entry)
+                            for key in entry.keys():
+                                line += ' ' + str(entry[key])
 
+                        # write
                         pos_txt.write(line + '\n')
 
                         # copy file into positives directory
                         src_img_path = os.path.join('gathered_data',
                                                     'yolo',
                                                     path.replace('positives\\', ''))
-                        dst_img_path = os.path.join('custom_data', path)
+                        dst_img_path = os.path.join(detectable_class + '_data',
+                                                    'positives',
+                                                    path.replace('positives\\', ''))
                         shutil.copyfile(src_img_path, dst_img_path)
 
                 # fetch negatives (write negative entries in neg.txt and move corresponding images)
-                with open(neg_txt_path, 'a') as neg_txt:
-                    for _, path in negatives.items():
-                        neg_txt.write(path)
+                with open(os.path.join(detectable_class + '_data', neg_txt_name), 'a+') as neg_txt:
+                    for path_dict in negatives:
+
+                        path = path_dict['path']
+
+                        # write
+                        neg_txt.write(path + '\n')
 
                         # copy file into negatives directory
                         src_img_path = os.path.join('gathered_data',
                                                     'yolo',
                                                     path.replace('negatives\\', ''))
-                        dst_img_path = os.path.join('custom_data', path)
+                        dst_img_path = os.path.join(detectable_class + '_data',
+                                                    'negatives',
+                                                    path.replace('negatives\\', ''))
                         shutil.copyfile(src_img_path, dst_img_path)
 
             else:
@@ -162,12 +175,13 @@ def FetchNewTrainingData():
     # get runIds of recent data
     fetched_ids_path = 'already_fetched.txt'
     run_ids = []
-    fetched_ids = None
+    fetched_ids = []
     if os.path.isfile(fetched_ids_path):
         with open(fetched_ids_path, 'r') as fetched_ids_file:
             fetched_ids = fetched_ids_file.readlines()
     else:
         fetched_ids = []
+    fetched_ids = [fetched_id.replace('\n', '') for fetched_id in fetched_ids]
 
     # get, sort and fetch new data
     json_path = os.path.join('gathered_data', 'cascade_classifier')
@@ -184,7 +198,7 @@ def FetchNewTrainingData():
                 # sort out already fetched data
                 run_data_list = [run_data for run_data in run_data_list if not run_data['runId'] in fetched_ids]
 
-                # fetch new data
+                # fetch new data of this json
                 with open(fetched_ids_path, 'a+') as fetched_ids_file:
                     for run_data in run_data_list:
                         FetchData(run_data)

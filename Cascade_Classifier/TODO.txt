@@ -1,6 +1,6 @@
 TODOS:
-- handle TODOS in cascadeutils.py
-- debug cascadeutils.py
+- handle TODOS in cascadeutils.py (check)
+- debug cascadeutils.py (check)
 - hopefully gather data from friends
 
 - when training_data_generation for cascade classifier works:
