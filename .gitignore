@@ -131,6 +131,9 @@ dmypy.json
 # darknet repository
 darknet/
 
+# openvs for windows
+Cascade_Classifier/opencv
+
 # sorted training data for cascade classifier is only needed on my windows machine
 Cascade_Classifier/balls_data
 Cascade_Classifier/cubes_data

@@ -1,6 +1,6 @@
 import os
 import os.path
-#import cv2
+import cv2
 import math
 import json
 import shutil
@@ -8,21 +8,28 @@ import shutil
 # new classes need to be added here
 DETECTABLE_CLASSES = ['cubes', 'balls', 'tetraeders']
 
-'''def CreateNegTxt(   negs_dir_path=os.path.join('custom_data', 'negatives'),
-                    negs_txt_path=os.path.join('custom_data', 'neg.txt')):
+def CreateNegTxt(detectable_class_id: int):
+
+    negs_dir_path = os.path.join(DETECTABLE_CLASSES[detectable_class_id] + '_data', 'negatives')
+    negs_txt_path = os.path.join(DETECTABLE_CLASSES[detectable_class_id] + '_data', 'negs.txt')
 
     negs_paths = os.listdir(negs_dir_path)
-    negs_paths = [os.path.join(negs_dir_path, path) for path in negs_paths]
+    negs_paths = [os.path.join(negs_dir_path, file_name) for file_name in negs_paths]
 
     with open(negs_txt_path, 'a') as negTxt:
         for path in negs_paths:
-            negTxt.write(path.replace('custom_data\\', '').replace('custom_data/', '') + '\n')
 
-def CreatePosTxtAndFilterNegsOut(   class_id,
-                                    poss_dir_path=os.path.join('custom_data', 'positives'),
-                                    labels_dir_path=os.path.join('custom_data', 'labels'),
-                                    negs_dir_path=os.path.join('custom_data', 'negatives'),
-                                    poss_txt_path=os.path.join('custom_data', 'pos.txt')):
+            path = path.replace(DETECTABLE_CLASSES[detectable_class_id] + '_data' + '\\', '') \
+                        .replace(DETECTABLE_CLASSES[detectable_class_id] + '_data' + '/', '')
+
+            negTxt.write(path + '\n')
+
+def CreatePosTxtAndFilterNegsOut(detectable_class_id: int):
+
+    poss_dir_path = os.path.join(DETECTABLE_CLASSES[detectable_class_id] + '_data', 'positives')
+    labels_dir_path = os.path.join(DETECTABLE_CLASSES[detectable_class_id] + '_data', 'labels')
+    negs_dir_path = os.path.join(DETECTABLE_CLASSES[detectable_class_id] + '_data', 'negatives')
+    poss_txt_path = os.path.join(DETECTABLE_CLASSES[detectable_class_id] + '_data', 'pos.txt')
 
     labels_paths = os.listdir(labels_dir_path)
     labels_paths = [os.path.join(labels_dir_path, path) for path in labels_paths]
@@ -59,14 +66,14 @@ def CreatePosTxtAndFilterNegsOut(   class_id,
                     legit = True
 
                     # check if label makes sense
-                    if  math.ceil(x + w) > im_width
-                        or  math.ceil(y + h) > im_height
-                        or x < 3 or x + w > im_width - 3
-                        or y < 3 or y + h > im_height - 3
+                    if math.ceil(x + w) > im_width \
+                        or  math.ceil(y + h) > im_height \
+                        or x < 3 or x + w > im_width - 3 \
+                        or y < 3 or y + h > im_height - 3 \
                         or w < 6 or h < 6:
                         legit = False
 
-                    if id == class_id and legit:
+                    if id == detectable_class_id and legit:
                         
                         line_tail.append(' ' + str(x) + ' ' + str(y) + ' ' + str(w) + ' ' + str(h))
 
@@ -97,10 +104,9 @@ def CreatePosTxtAndFilterNegsOut(   class_id,
                 print(label_file_data[0] + ' will be transfered to ' + negs_dir_path)
                 src_path = label_file_data[0]
                 dest_path = label_file_data[0].replace('positives', 'negatives')
-                os.replace(src_path, dest_path)'''
+                os.replace(src_path, dest_path)
 
 def FetchNewTrainingData():
-    # TODO: Funktion muss für jede detectable Klasse zwei TXTs erstellen!!
 
     # helping function
     def FetchData(run_data):
@@ -208,4 +214,4 @@ def FetchNewTrainingData():
 
 if __name__ == '__main__':
 
-    FetchNewTrainingData()
+    pass
