@@ -4,11 +4,12 @@ import cv2
 import math
 import json
 import shutil
+import platform
 
 # new classes need to be added here
 DETECTABLE_CLASSES = ['cubes', 'balls', 'tetraeders']
 
-def CreateNegTxt(detectable_class_id: int):
+def CreateNegTxt(detectable_class_id):
 
     negs_dir_path = os.path.join(DETECTABLE_CLASSES[detectable_class_id] + '_data', 'negatives')
     negs_txt_path = os.path.join(DETECTABLE_CLASSES[detectable_class_id] + '_data', 'negs.txt')
@@ -24,7 +25,7 @@ def CreateNegTxt(detectable_class_id: int):
 
             negTxt.write(path + '\n')
 
-def CreatePosTxtAndFilterNegsOut(detectable_class_id: int):
+def CreatePosTxtAndFilterNegsOut(detectable_class_id):
 
     poss_dir_path = os.path.join(DETECTABLE_CLASSES[detectable_class_id] + '_data', 'positives')
     labels_dir_path = os.path.join(DETECTABLE_CLASSES[detectable_class_id] + '_data', 'labels')
@@ -212,6 +213,106 @@ def FetchNewTrainingData():
     else:
         raise Exception('The directory ' + json_path + ' does not exist.')
 
+def FilterOutPositivesWithTooSmallSize(min_size, detectable_class_id):
+
+    file_name = os.path.join(DETECTABLE_CLASSES[detectable_class_id] + '_data', 'pos.txt')
+
+    lines = []
+    with open(file_name, 'r') as file:
+
+        lines = file.readlines()
+
+    lines_to_keep = []
+    for line in lines:
+
+        bbox_info = line.split()
+        path = bbox_info[0]
+        bbox_info.pop(0)
+        num = int(bbox_info[0])
+        bbox_info.pop(0)
+
+        no_too_small = True
+        for _ in range(num):
+
+            _, _, w, h = bbox_info[0:4]
+            w = int(w)
+            h = int(h)
+            for _ in range(4):
+                bbox_info.pop(0)
+
+            if w < min_size or h < min_size:
+
+                no_too_small = False
+                break
+
+        if no_too_small:
+
+            # keep corresponding line
+            lines_to_keep.append(line)
+
+    with open(file_name.replace('.txt', '_new.txt'), 'a+') as file:
+
+        for line in lines_to_keep:
+
+            file.write(line)
+
+def CascadeDetection(detectable_class_directory, image_path, results_directory=None):
+
+    image_paths = []
+    if image_path.endswith('.txt'):
+        
+        with open(image_path, 'r') as file:
+
+            lines = file.readlines()
+
+            for line in lines:
+
+                line = line.split()
+                line = line[0] # the actual path
+                
+                image_paths.append(os.path.join(detectable_class_directory, line))
+
+    else:
+        image_paths = [image_path]
+
+    # load the trained model
+    classifier = cv2.CascadeClassifier(os.path.join(detectable_class_directory, 'cascade', 'cascade.xml'))
+
+    for path in image_paths:
+
+        # load an image
+        img = cv2.imread(path)
+
+        # detect objects
+        rectangles = classifier.detectMultiScale(img)
+
+        # draw detection results onto original image
+        for x, y, w, h in rectangles:
+            
+            img = cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 1)
+
+        if results_directory == None:
+            # display the image
+            cv2.imshow('Matches', img)
+            cv2.waitKey(0)
+
+        else:
+
+            # save the image
+            if not os.path.exists(results_directory):
+                os.makedirs(results_directory)
+
+            idx = -1
+            if platform.system().startswith('Windows'):
+                idx = path.rfind('\\')
+            else:
+                idx = path.rfind('/')
+
+            filename = path[idx+1:]
+            filename = filename.replace('.png', '_result.png')
+
+            cv2.imwrite(os.path.join(results_directory, filename), img)
+
 if __name__ == '__main__':
 
-    pass
+    CascadeDetection('balls_data', 'balls_data\\positives\\2021-1-18_23h51min20sec2786.png')

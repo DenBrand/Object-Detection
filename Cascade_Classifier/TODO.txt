@@ -8,8 +8,8 @@ TODOS:
 	- evaluate its performance
 	- if acceptable:
 		- tell Tobi and ask for next steps (enroll bachelors thesis?)
-	- else:
+	- else: (check)
 		- ask Tobi (maybe another, simpler model?)
 
 - pimp unity game
-- game should encode user name in json file name
+- game should encode user name in json file name (check)
