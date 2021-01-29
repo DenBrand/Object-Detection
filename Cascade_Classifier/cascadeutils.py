@@ -181,7 +181,6 @@ def FetchNewTrainingData():
 
     # get runIds of recent data
     fetched_ids_path = 'already_fetched.txt'
-    run_ids = []
     fetched_ids = []
     if os.path.isfile(fetched_ids_path):
         with open(fetched_ids_path, 'r') as fetched_ids_file:
@@ -315,4 +314,4 @@ def CascadeDetection(detectable_class_directory, image_path, results_directory=N
 
 if __name__ == '__main__':
 
-    CascadeDetection('balls_data', 'balls_data\\positives\\2021-1-18_23h51min20sec2786.png')
+    pass
