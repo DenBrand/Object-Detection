@@ -1,0 +1,3 @@
+In this experiment I try to find out if and in which extend the performances of yolov5 and the cascade classifier are influenced, if there is a fixed color for every detectable class and if there is none.
+
+- data_collector sollte Bilder ein mal mit festen und ein mal mit beliebigen Farben abspeichern (aber beides mit denselben Perspektiven)
