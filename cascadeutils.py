@@ -1,6 +1,6 @@
 import os
 import os.path
-import cv2
+#import cv2
 import math
 import json
 import shutil
@@ -107,8 +107,26 @@ def CreatePosTxtAndFilterNegsOut(detectable_class_id):
                 dest_path = label_file_data[0].replace('positives', 'negatives')
                 os.replace(src_path, dest_path)
 
-def FetchNewTrainingData():
-
+def FetchNewTrainingData(src_dir, imgs_dir, target_dir, img_name_ending=None):
+    """Read in run data from all JSONs in src_dir, generate pos.txt and
+    neg.txt in target_dir and sort (copy) samples in imgs_dir into
+    target_dir/positives/ and target_dir/negatives.
+    
+    Keyword arguments:
+    src_dir -- the path to the directory in which the JSONs containing
+    training data are in
+    imgs_dir -- the path to the directory in which the images (positives
+    and negatives) are in
+    target_dir -- the path to the directory in which pos.txt, neg.txt,
+    positives/ and negatives/ shall be generated in (sorted by detectable
+    classes). already_fetched.txt will be generated there too, to prevent
+    multiple fetching.
+    img_name_ending -- normally the image names end with <id>.png,
+    but for example in the arbitrary colors data set, they will end with
+    <id>_randomized_colors.png. In this case, you should pass
+    '_randomized_colors'
+    """
+    
     # helping function
     def FetchData(run_data):
         pos_txt_name = 'pos.txt'
@@ -131,15 +149,18 @@ def FetchNewTrainingData():
                         positives_dict[pos_entry['path']].append(pos_entry['boxEntry'])
 
                 # ensure directory for this detectable class exists
-                os.makedirs(os.path.join(   detectable_class + '_data', 'positives'),
+                os.makedirs(os.path.join(   target_dir, detectable_class + '_data', 'positives'),
                                             exist_ok=True)
-                os.makedirs(os.path.join(   detectable_class + '_data', 'negatives'),
+                os.makedirs(os.path.join(   target_dir, detectable_class + '_data', 'negatives'),
                                             exist_ok=True)
 
                 # finally write positive entries in pos.txt
-                with open(os.path.join(detectable_class + '_data', pos_txt_name), 'a+') as pos_txt:
+                with open(os.path.join(target_dir, detectable_class + '_data', pos_txt_name), 'a+') as pos_txt:
                     for path, entries in positives_dict.items():
                         num_of_entries = len(entries)
+                        
+                        if img_name_ending is not None:
+                            path = path.replace('.png', img_name_ending + '.png')
 
                         line = path + ' ' + str(num_of_entries)
                         for entry in entries:
@@ -150,37 +171,38 @@ def FetchNewTrainingData():
                         pos_txt.write(line + '\n')
 
                         # copy file into positives directory
-                        src_img_path = os.path.join('gathered_data',
-                                                    'yolo',
-                                                    path.replace('positives\\', ''))
-                        dst_img_path = os.path.join(detectable_class + '_data',
+                        file_name = path.replace('positives\\', '')
+                        src_img_path = os.path.join(imgs_dir, file_name)
+                        dst_img_path = os.path.join(target_dir,
+                                                    detectable_class + '_data',
                                                     'positives',
-                                                    path.replace('positives\\', ''))
+                                                    file_name)
                         shutil.copyfile(src_img_path, dst_img_path)
 
-                # fetch negatives (write negative entries in neg.txt and move corresponding images)
-                with open(os.path.join(detectable_class + '_data', neg_txt_name), 'a+') as neg_txt:
+                # write negative entries into neg.txt, move corresponding images
+                with open(os.path.join(target_dir, detectable_class + '_data', neg_txt_name), 'a+') as neg_txt:
                     for path_dict in negatives:
 
                         path = path_dict['path']
+                        if img_name_ending is not None:
+                            path = path.replace('.png', img_name_ending + '.png')
 
                         # write
                         neg_txt.write(path + '\n')
 
                         # copy file into negatives directory
-                        src_img_path = os.path.join('gathered_data',
-                                                    'yolo',
-                                                    path.replace('negatives\\', ''))
-                        dst_img_path = os.path.join(detectable_class + '_data',
+                        file_name = path.replace('negatives\\', '')
+                        src_img_path = os.path.join(imgs_dir, file_name)
+                        dst_img_path = os.path.join(target_dir, detectable_class + '_data',
                                                     'negatives',
-                                                    path.replace('negatives\\', ''))
+                                                    file_name)
                         shutil.copyfile(src_img_path, dst_img_path)
 
             else:
                 print('WARNING: Could not find detectable class "' + detectable_class + '". Corresponding runId: ' + run_data['runId'])
 
     # get runIds of recent data
-    fetched_ids_path = 'already_fetched.txt'
+    fetched_ids_path = os.path.join(target_dir, 'already_fetched.txt')
     fetched_ids = []
     if os.path.isfile(fetched_ids_path):
         with open(fetched_ids_path, 'r') as fetched_ids_file:
@@ -190,13 +212,13 @@ def FetchNewTrainingData():
     fetched_ids = [fetched_id.replace('\n', '') for fetched_id in fetched_ids]
 
     # get, sort and fetch new data
-    json_path = os.path.join('gathered_data', 'cascade_classifier')
+    src_dir = os.path.join(src_dir)
     run_data_list = []
-    if os.path.exists(json_path):
-        json_names = os.listdir(json_path)
+    if os.path.exists(src_dir):
+        json_names = os.listdir(src_dir)
         json_names = [name for name in json_names if name[-5:] == '.json']
         for json_name in json_names:
-            with open(os.path.join(json_path, json_name), 'r') as json_file:
+            with open(os.path.join(src_dir, json_name), 'r') as json_file:
                 run_data_list = json.load(json_file)['runData']
                 if len(run_data_list) == 0:
                     raise Exception('There is no data in ' + json_name + '.')
@@ -204,13 +226,16 @@ def FetchNewTrainingData():
                 # sort out already fetched data
                 run_data_list = [run_data for run_data in run_data_list if not run_data['runId'] in fetched_ids]
 
+                # make sure directory already exists
+                os.makedirs(os.path.join(target_dir), exist_ok=True)
+
                 # fetch new data of this json
                 with open(fetched_ids_path, 'a+') as fetched_ids_file:
                     for run_data in run_data_list:
                         FetchData(run_data)
                         fetched_ids_file.write(run_data['runId'] + '\n')
     else:
-        raise Exception('The directory ' + json_path + ' does not exist.')
+        raise Exception('The directory ' + src_dir + ' does not exist.')
 
 def FilterOutPositivesWithTooSmallSize(min_size, detectable_class_id):
 
@@ -225,7 +250,6 @@ def FilterOutPositivesWithTooSmallSize(min_size, detectable_class_id):
     for line in lines:
 
         bbox_info = line.split()
-        path = bbox_info[0]
         bbox_info.pop(0)
         num = int(bbox_info[0])
         bbox_info.pop(0)
@@ -313,5 +337,4 @@ def CascadeDetection(detectable_class_directory, image_path, results_directory=N
             cv2.imwrite(os.path.join(results_directory, filename), img)
 
 if __name__ == '__main__':
-
     pass
