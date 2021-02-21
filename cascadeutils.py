@@ -1,6 +1,6 @@
 import os
 import os.path
-#import cv2
+import cv2
 import math
 import json
 import shutil
@@ -10,7 +10,8 @@ import platform
 DETECTABLE_CLASSES = ['cubes', 'balls', 'tetraeders']
 
 def CreateNegTxt(detectable_class_id):
-
+    """DEPRECATED: FetchNewTrainingData does that for us now."""
+    
     negs_dir_path = os.path.join(DETECTABLE_CLASSES[detectable_class_id] + '_data', 'negatives')
     negs_txt_path = os.path.join(DETECTABLE_CLASSES[detectable_class_id] + '_data', 'negs.txt')
 
@@ -26,7 +27,8 @@ def CreateNegTxt(detectable_class_id):
             negTxt.write(path + '\n')
 
 def CreatePosTxtAndFilterNegsOut(detectable_class_id):
-
+    """DEPRECATED: FetchNewTrainingData does that for us now."""
+    
     poss_dir_path = os.path.join(DETECTABLE_CLASSES[detectable_class_id] + '_data', 'positives')
     labels_dir_path = os.path.join(DETECTABLE_CLASSES[detectable_class_id] + '_data', 'labels')
     negs_dir_path = os.path.join(DETECTABLE_CLASSES[detectable_class_id] + '_data', 'negatives')
@@ -38,24 +40,18 @@ def CreatePosTxtAndFilterNegsOut(detectable_class_id):
     # iterate over all label files
     all_label_data = []
     for labels_path in labels_paths:
-
         with open(labels_path, 'r') as labels:
-
             image_path = labels_path.replace(labels_dir_path, poss_dir_path).replace('.txt', '.jpg')
             image = cv2.imread(image_path)
             im_width, im_height, _ = image.shape
-            #im_width, im_height = 320, 320
             line_head = [image_path]
             lines = labels.readlines()
 
             # iterate over all labels
             line_tail = []
             for line in lines:
-
                 try:
-
                     id, x, y, w, h = line.split()
-
                     id = int(id)
                     w = float(w) * im_width
                     h = float(h) * im_height
@@ -64,9 +60,8 @@ def CreatePosTxtAndFilterNegsOut(detectable_class_id):
                     w = int(math.ceil(w)) + 8
                     h = int(math.ceil(h)) + 8
 
-                    legit = True
-
                     # check if label makes sense
+                    legit = True
                     if math.ceil(x + w) > im_width \
                         or  math.ceil(y + h) > im_height \
                         or x < 3 or x + w > im_width - 3 \
@@ -75,31 +70,24 @@ def CreatePosTxtAndFilterNegsOut(detectable_class_id):
                         legit = False
 
                     if id == detectable_class_id and legit:
-                        
                         line_tail.append(' ' + str(x) + ' ' + str(y) + ' ' + str(w) + ' ' + str(h))
 
                 except Exception as err:
-
                     print(err)
                     print(image_path + ' will be transfered to ' + negs_dir_path)
                     src_path = image_path
                     dest_path = image_path.replace('positives', 'negatives')
                     os.replace(src_path, dest_path)
                     line_tail.append('')
-
             line_head.append(line_tail)
-
         all_label_data.append(line_head)
     
     with open(poss_txt_path, 'a') as poss_txt:
-
         for label_file_data in all_label_data:
-
             if len(label_file_data[1]) > 0:
                 line = label_file_data[0].replace('custom_data\\', '').replace('custom_data/', '') + ' ' + str(len(label_file_data[1]))
                 for data in label_file_data[1]:
                     line += data
-
                 poss_txt.write(line + '\n')
             else:
                 print(label_file_data[0] + ' will be transfered to ' + negs_dir_path)
@@ -128,7 +116,7 @@ def FetchNewTrainingData(src_dir, imgs_dir, target_dir, img_name_ending=None):
     """
     
     # helping function
-    def FetchData(run_data):
+    def Fetch(run_data):
         pos_txt_name = 'pos.txt'
         neg_txt_name = 'neg.txt'
 
@@ -232,13 +220,14 @@ def FetchNewTrainingData(src_dir, imgs_dir, target_dir, img_name_ending=None):
                 # fetch new data of this json
                 with open(fetched_ids_path, 'a+') as fetched_ids_file:
                     for run_data in run_data_list:
-                        FetchData(run_data)
+                        Fetch(run_data)
                         fetched_ids_file.write(run_data['runId'] + '\n')
     else:
         raise Exception('The directory ' + src_dir + ' does not exist.')
 
 def FilterOutPositivesWithTooSmallSize(min_size, detectable_class_id):
-
+    """DEPRECATED: Ground Truth Collector forbids creation of such samples
+    by this time."""
     file_name = os.path.join(DETECTABLE_CLASSES[detectable_class_id] + '_data', 'pos.txt')
 
     lines = []
@@ -279,53 +268,61 @@ def FilterOutPositivesWithTooSmallSize(min_size, detectable_class_id):
 
             file.write(line)
 
-def CascadeDetection(detectable_class_directory, image_path, results_directory=None):
-
+def CascadeDetection(model_path, imgs_dir, image_name, results_directory=None):
+    """Use model_path to detect objects on the image/images image_name lying
+    in imgs_dir. Save results in results_directory if given, otherwise show
+    them immediately.
+    
+    Keyword arguments:
+    model_path -- The path to the model XML file, which shall be used for
+    object detection.
+    imgs_dir -- The path to the directory containing the images to be
+    processed.
+    image_name -- Either the name of an image file in imgs_dir to perform the
+    detection on, or a path to a TXT file in imgs_dir, which contains a list
+    of names of image files.
+    results_directory -- The directory to save results in. If not given,
+    results will be shown in the screen. (default: None)
+    """
+    
     image_paths = []
-    if image_path.endswith('.txt'):
+    if image_name.endswith('.txt'):
         
-        with open(image_path, 'r') as file:
-
+        # read in image name and build paths to them
+        with open(image_name, 'r') as file:
             lines = file.readlines()
-
             for line in lines:
-
                 line = line.split()
-                line = line[0] # the actual path
+                line = line[0]
                 
-                image_paths.append(os.path.join(detectable_class_directory, line))
+                # build actual path to image
+                image_paths.append(os.path.join(imgs_dir, line))
 
     else:
-        image_paths = [image_path]
+        image_paths = [image_name]
 
     # load the trained model
-    classifier = cv2.CascadeClassifier(os.path.join(detectable_class_directory, 'cascade', 'cascade.xml'))
+    classifier = cv2.CascadeClassifier(model_path)
 
     for path in image_paths:
-
-        # load an image
+        # load an image and detect objects
         img = cv2.imread(path)
-
-        # detect objects
         rectangles = classifier.detectMultiScale(img)
 
         # draw detection results onto original image
         for x, y, w, h in rectangles:
-            
             img = cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 1)
 
         if results_directory == None:
             # display the image
             cv2.imshow('Matches', img)
             cv2.waitKey(0)
-
         else:
-
             # save the image
             if not os.path.exists(results_directory):
                 os.makedirs(results_directory)
 
-            idx = -1
+            idx = None
             if platform.system().startswith('Windows'):
                 idx = path.rfind('\\')
             else:
