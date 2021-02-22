@@ -9,7 +9,7 @@ import platform
 # new classes need to be added here
 DETECTABLE_CLASSES = ['cubes', 'balls', 'tetraeders']
 
-def CreateNegTxt(detectable_class_id):
+def CreateNegTxt(detectable_class_id: int):
     """DEPRECATED: FetchNewTrainingData does that for us now."""
     
     negs_dir_path = os.path.join(DETECTABLE_CLASSES[detectable_class_id] + '_data', 'negatives')
@@ -26,7 +26,7 @@ def CreateNegTxt(detectable_class_id):
 
             negTxt.write(path + '\n')
 
-def CreatePosTxtAndFilterNegsOut(detectable_class_id):
+def CreatePosTxtAndFilterNegsOut(detectable_class_id: int):
     """DEPRECATED: FetchNewTrainingData does that for us now."""
     
     poss_dir_path = os.path.join(DETECTABLE_CLASSES[detectable_class_id] + '_data', 'positives')
@@ -95,7 +95,7 @@ def CreatePosTxtAndFilterNegsOut(detectable_class_id):
                 dest_path = label_file_data[0].replace('positives', 'negatives')
                 os.replace(src_path, dest_path)
 
-def FetchNewTrainingData(src_dir, imgs_dir, target_dir, img_name_ending=None):
+def FetchNewTrainingData(src_dir: str, imgs_dir: str, target_dir: str, img_name_ending: str=None):
     """Read in run data from all JSONs in src_dir, generate pos.txt and
     neg.txt in target_dir and sort (copy) samples in imgs_dir into
     target_dir/positives/ and target_dir/negatives.
@@ -225,7 +225,7 @@ def FetchNewTrainingData(src_dir, imgs_dir, target_dir, img_name_ending=None):
     else:
         raise Exception('The directory ' + src_dir + ' does not exist.')
 
-def FilterOutPositivesWithTooSmallSize(min_size, detectable_class_id):
+def FilterOutPositivesWithTooSmallSize(min_size: int, detectable_class_id: int):
     """DEPRECATED: Ground Truth Collector forbids creation of such samples
     by this time."""
     file_name = os.path.join(DETECTABLE_CLASSES[detectable_class_id] + '_data', 'pos.txt')
@@ -268,20 +268,20 @@ def FilterOutPositivesWithTooSmallSize(min_size, detectable_class_id):
 
             file.write(line)
 
-def CascadeDetection(model_path, imgs_dir, image_name, results_directory=None):
+def DetectAndShow(model_path: str, imgs_dir: str, image_name: str, results_directory: str=None):
     """Use model_path to detect objects on the image/images image_name lying
     in imgs_dir. Save results in results_directory if given, otherwise show
     them immediately.
     
     Keyword arguments:
-    model_path -- The path to the model XML file, which shall be used for
+    model_path -- the path to the model XML file, which shall be used for
     object detection.
-    imgs_dir -- The path to the directory containing the images to be
+    imgs_dir -- the path to the directory containing the images to be
     processed.
-    image_name -- Either the name of an image file in imgs_dir to perform the
+    image_name -- either the name of an image file in imgs_dir to perform the
     detection on, or a path to a TXT file in imgs_dir, which contains a list
     of names of image files.
-    results_directory -- The directory to save results in. If not given,
+    results_directory -- the directory to save results in. If not given,
     results will be shown in the screen. (default: None)
     """
     

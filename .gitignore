@@ -140,9 +140,9 @@ Cascade_Classifier/cubes_data
 Cascade_Classifier/tetraeders_data
 
 # experimentfolders
-experiment_01-arbitrary_colors/
-experiment_02-brightness/
-experiment_03-with_textures/
-experiment_04-noice/
-experiment_05-smoothing/
-experiment_06-vertical_rotation/
+#experiment_01-arbitrary_colors/
+#experiment_02-brightness/
+#experiment_03-with_textures/
+#experiment_04-noice/
+#experiment_05-smoothing/
+#experiment_06-vertical_rotation/
