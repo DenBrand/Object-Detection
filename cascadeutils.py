@@ -102,9 +102,9 @@ def FetchNewTrainingData(src_dir: str, imgs_dir: str, target_dir: str, img_name_
     
     Keyword arguments:
     src_dir -- the path to the directory in which the JSONs containing
-    training data are in
+    training data are
     imgs_dir -- the path to the directory in which the images (positives
-    and negatives) are in
+    and negatives) are
     target_dir -- the path to the directory in which pos.txt, neg.txt,
     positives/ and negatives/ shall be generated in (sorted by detectable
     classes). already_fetched.txt will be generated there too, to prevent
