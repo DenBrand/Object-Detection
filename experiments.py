@@ -6,6 +6,7 @@ import json
 import shutil
 from random import randrange
 from typing import Tuple, List
+from itertools import product
 
 # class DetectionResults:
 #     """In this class the cascade classifier and yolov5 finally become things
@@ -90,13 +91,14 @@ def SplitData(img_dir: str,
     
     # get run_data copy them into thest_set_data and delete chosen images
     os.makedirs(dest_cascade_dir, exist_ok=True)
-    for json_name in json_list:
-        shutil.copy(join(cascade_dir, json_name), dest_cascade_dir)
         
-        def RemoveEntries(orig_or_new: bool):
-            """orig_or_new -- True -> handle source data
-            False -> handle destination data
-            """
+    def RemoveEntries(orig_or_new: bool):
+        """orig_or_new -- True -> handle source data
+        False -> handle destination data
+        """
+            
+        for json_name in json_list:
+            shutil.copy(join(cascade_dir, json_name), dest_cascade_dir)
             
             # specity json_path
             json_path = None
@@ -109,36 +111,36 @@ def SplitData(img_dir: str,
             with open(join(json_path, json_name), 'r') as json_file:
                 data = json.load(json_file)
                 
-            def RemoveEntriesHelper(detec_cls: str, label_type: str):
+            def RemoveEntriesHelper():
                 for run_data in data['runData']:
-                    for entry in run_data[detec_cls][label_type]:
-                        if orig_or_new:
-                            if entry['path'].replace(label_type + '\\', '') in test_set_imgs:
-                                run_data[detec_cls][label_type].remove(entry)
-                        else:
-                            if entry['path'].replace(label_type + '\\', '') not in test_set_imgs:
-                                run_data[detec_cls][label_type].remove(entry)
-                                
-            RemoveEntriesHelper('cubes', 'positives')
-            RemoveEntriesHelper('cubes', 'negatives')
-            RemoveEntriesHelper('balls', 'positives')
-            RemoveEntriesHelper('balls', 'negatives')
+                    for combo in product(('cubes', 'balls'),
+                                         ('positives', 'negatives')):
+                        for entry in run_data[combo[0]][combo[1]]:
+                            if orig_or_new:
+                                if entry['path'].replace(label_type + '\\', '')
+                                in test_set_imgs:
+                                    run_data[combo[0]][combo[1]].remove(entry)
+                            else:
+                                if entry['path'].replace(label_type + '\\', '')
+                                not in test_set_imgs:
+                                    run_data[combo[0]][combo[1]].remove(entry)
+            RemoveEntriesHelper()
                                 
             # write back
             with open(join(json_path, json_name), 'w') as json_file:
                 json.dump(data, json_file, indent=4)
                 
-        RemoveEntries(True)
-        RemoveEntries(False)
+    RemoveEntries(True)
+    RemoveEntries(False)
         
         # with open(join(cascade_dir, json_name), 'r+') as json_file:
         #     data = json.load(json_file)
         #     def RemoveEntriesHelper(detec_cls: str, label_type: str):
         #         for run_data in data['runData']:
-        #             for entry in run_data[detec_cls][label_type]:
+        #             for entry in run_data[combo[0]][combo[1]]:
         #                 if entry['path'].replace(label_type + '\\', '') \
         #                 in test_set_imgs:
-        #                     run_data[detec_cls][label_type].remove(entry)
+        #                     run_data[combo[0]][combo[1]].remove(entry)
         #     RemoveEntriesHelper('cubes', 'positives')
         #     RemoveEntriesHelper('cubes', 'negatives')
         #     RemoveEntriesHelper('balls', 'positives')
@@ -151,10 +153,10 @@ def SplitData(img_dir: str,
         #     data = json.load(json_file)
         #     def RemoveEntriesHelper(detec_cls: str, label_type: str):
         #         for run_data in data['runData']:
-        #             for entry in run_data[detec_cls][label_type]:
+        #             for entry in run_data[combo[0]][combo[1]]:
         #                 if entry['path'].replace(label_type + '\\', '') \
         #                 not in test_set_images:
-        #                     run_data[detec_cls][label_type].remove(entry)
+        #                     run_data[combo[0]][combo[1]].remove(entry)
         #     RemoveEntriesHelper('cubes', 'positives')
         #     RemoveEntriesHelper('cubes', 'negatives')
         #     RemoveEntriesHelper('balls', 'positives')
@@ -185,8 +187,8 @@ def SplitDataByPercentage(img_dir: str,
                           dest_yolo_dir: str,
                           test_set_portion: int,
                           chosen_imgs: str=None):
-    """Same as SplitData, but with test_set_portion (in percent instead of
-    an absolute number)"""
+    """Same as SplitData, but with test_set_portion (in percent instead of an
+    absolute number)"""
     
     img_list = [img for img in listdir(img_dir) if img[-4:] == '.png']
     size = len(img_list) * test_set_portion // 100
@@ -201,6 +203,7 @@ def SplitDataByPercentage(img_dir: str,
               chosen_imgs)
 
 if __name__ == '__main__':
+    # Test:
     SplitData(r'experiment_01-arbitrary_colors\training_data\model_fixed\raw_data',
               r'experiment_01-arbitrary_colors\training_data\cascade_JSONs',
               r'experiment_01-arbitrary_colors\training_data\yolov5_labels',
@@ -208,3 +211,12 @@ if __name__ == '__main__':
               r'experiment_01-arbitrary_colors\test_data\cascade_labels',
               r'experiment_01-arbitrary_colors\test_data\yolo_labels',
               400)
+    
+    # Test 2:
+    # SplitData(r'experiment_01-arbitrary_colors\ground_truth_collector_v1.8_win\training_data\standard\yolo_imgs',
+    #           r'experiment_01-arbitrary_colors\ground_truth_collector_v1.8_win\training_data\standard\cascade_labels',
+    #           r'experiment_01-arbitrary_colors\ground_truth_collector_v1.8_win\training_data\standard\yolo_labels',
+    #           r'experiment_01-arbitrary_colors\ground_truth_collector_v1.8_win\training_data\standard\dest_imgs',
+    #           r'experiment_01-arbitrary_colors\ground_truth_collector_v1.8_win\training_data\standard\dest_cascade_labels',
+    #           r'experiment_01-arbitrary_colors\ground_truth_collector_v1.8_win\training_data\standard\dest_yolo_labels',
+    #           3)
