@@ -1,0 +1,468 @@
+{
+    "runData": [
+        {
+            "runId": "-1490231636_9723",
+            "mode": "RANDOMIZE_DETECTABLE_COLORS",
+            "version": "1.8",
+            "cubes": {
+                "positives": [
+                    {
+                        "path": "positives\\2021-2-19_4h35min34sec1876.png",
+                        "boxEntry": {
+                            "x": 146,
+                            "y": 91,
+                            "w": 63,
+                            "h": 71
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h35min50sec1927.png",
+                        "boxEntry": {
+                            "x": 136,
+                            "y": 65,
+                            "w": 55,
+                            "h": 58
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h36min17sec1632.png",
+                        "boxEntry": {
+                            "x": 193,
+                            "y": 210,
+                            "w": 105,
+                            "h": 98
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h36min17sec1632.png",
+                        "boxEntry": {
+                            "x": 126,
+                            "y": 193,
+                            "w": 58,
+                            "h": 59
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h36min17sec1632.png",
+                        "boxEntry": {
+                            "x": 15,
+                            "y": 192,
+                            "w": 72,
+                            "h": 57
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h36min53sec8562.png",
+                        "boxEntry": {
+                            "x": 43,
+                            "y": 159,
+                            "w": 108,
+                            "h": 132
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h36min53sec8562.png",
+                        "boxEntry": {
+                            "x": 175,
+                            "y": 86,
+                            "w": 49,
+                            "h": 44
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h38min7sec4218.png",
+                        "boxEntry": {
+                            "x": 99,
+                            "y": 55,
+                            "w": 145,
+                            "h": 117
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h39min5sec2946.png",
+                        "boxEntry": {
+                            "x": 143,
+                            "y": 122,
+                            "w": 57,
+                            "h": 64
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h39min40sec9508.png",
+                        "boxEntry": {
+                            "x": 108,
+                            "y": 145,
+                            "w": 41,
+                            "h": 44
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h40min37sec4083.png",
+                        "boxEntry": {
+                            "x": 53,
+                            "y": 97,
+                            "w": 55,
+                            "h": 50
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h42min3sec7017.png",
+                        "boxEntry": {
+                            "x": 110,
+                            "y": 73,
+                            "w": 96,
+                            "h": 105
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h42min38sec9903.png",
+                        "boxEntry": {
+                            "x": 86,
+                            "y": 55,
+                            "w": 81,
+                            "h": 84
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h43min34sec4429.png",
+                        "boxEntry": {
+                            "x": 114,
+                            "y": 54,
+                            "w": 62,
+                            "h": 64
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h43min44sec5177.png",
+                        "boxEntry": {
+                            "x": 23,
+                            "y": 105,
+                            "w": 79,
+                            "h": 63
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h43min44sec5177.png",
+                        "boxEntry": {
+                            "x": 161,
+                            "y": 101,
+                            "w": 51,
+                            "h": 50
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h44min44sec1940.png",
+                        "boxEntry": {
+                            "x": 128,
+                            "y": 143,
+                            "w": 74,
+                            "h": 77
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h45min46sec2281.png",
+                        "boxEntry": {
+                            "x": 182,
+                            "y": 109,
+                            "w": 114,
+                            "h": 102
+                        }
+                    }
+                ],
+                "negatives": [
+                    {
+                        "path": "negatives\\2021-2-19_4h35min45sec2216.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h37min2sec9298.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h38min29sec7715.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h38min38sec8743.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h39min59sec5865.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h40min14sec3355.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h40min33sec9379.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h41min16sec5400.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h41min18sec2709.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h41min43sec8564.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h41min48sec2710.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h42min24sec4689.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h43min22sec8841.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h43min26sec1685.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h44min11sec4177.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h44min13sec1715.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h45min14sec3076.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h45min35sec3392.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h45min49sec9143.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h45min55sec1215.png"
+                    }
+                ]
+            },
+            "balls": {
+                "positives": [
+                    {
+                        "path": "positives\\2021-2-19_4h35min45sec2216.png",
+                        "boxEntry": {
+                            "x": 110,
+                            "y": 12,
+                            "w": 55,
+                            "h": 59
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h37min2sec9298.png",
+                        "boxEntry": {
+                            "x": 146,
+                            "y": 106,
+                            "w": 56,
+                            "h": 48
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h38min29sec7715.png",
+                        "boxEntry": {
+                            "x": 137,
+                            "y": 111,
+                            "w": 69,
+                            "h": 50
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h38min38sec8743.png",
+                        "boxEntry": {
+                            "x": 176,
+                            "y": 102,
+                            "w": 144,
+                            "h": 160
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h39min59sec5865.png",
+                        "boxEntry": {
+                            "x": 141,
+                            "y": 93,
+                            "w": 39,
+                            "h": 40
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h39min59sec5865.png",
+                        "boxEntry": {
+                            "x": 212,
+                            "y": 102,
+                            "w": 41,
+                            "h": 40
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h40min14sec3355.png",
+                        "boxEntry": {
+                            "x": 87,
+                            "y": 93,
+                            "w": 74,
+                            "h": 73
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h40min33sec9379.png",
+                        "boxEntry": {
+                            "x": 149,
+                            "y": 107,
+                            "w": 39,
+                            "h": 39
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h40min37sec4083.png",
+                        "boxEntry": {
+                            "x": 209,
+                            "y": 137,
+                            "w": 41,
+                            "h": 42
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h41min43sec8564.png",
+                        "boxEntry": {
+                            "x": 129,
+                            "y": 79,
+                            "w": 79,
+                            "h": 79
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h41min48sec2710.png",
+                        "boxEntry": {
+                            "x": 80,
+                            "y": 43,
+                            "w": 113,
+                            "h": 114
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h41min48sec2710.png",
+                        "boxEntry": {
+                            "x": 194,
+                            "y": 4,
+                            "w": 61,
+                            "h": 63
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h42min24sec4689.png",
+                        "boxEntry": {
+                            "x": 116,
+                            "y": 94,
+                            "w": 51,
+                            "h": 52
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h43min26sec1685.png",
+                        "boxEntry": {
+                            "x": 140,
+                            "y": 103,
+                            "w": 107,
+                            "h": 104
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h43min44sec5177.png",
+                        "boxEntry": {
+                            "x": 255,
+                            "y": 104,
+                            "w": 45,
+                            "h": 43
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h45min14sec3076.png",
+                        "boxEntry": {
+                            "x": 146,
+                            "y": 83,
+                            "w": 63,
+                            "h": 63
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h45min14sec3076.png",
+                        "boxEntry": {
+                            "x": 135,
+                            "y": 139,
+                            "w": 86,
+                            "h": 84
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h45min49sec9143.png",
+                        "boxEntry": {
+                            "x": 126,
+                            "y": 99,
+                            "w": 82,
+                            "h": 83
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-19_4h45min55sec1215.png",
+                        "boxEntry": {
+                            "x": 158,
+                            "y": 73,
+                            "w": 88,
+                            "h": 88
+                        }
+                    }
+                ],
+                "negatives": [
+                    {
+                        "path": "negatives\\2021-2-19_4h35min34sec1876.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h35min50sec1927.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h36min17sec1632.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h36min53sec8562.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h38min7sec4218.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h39min5sec2946.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h39min40sec9508.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h41min16sec5400.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h41min18sec2709.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h42min3sec7017.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h42min38sec9903.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h43min22sec8841.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h43min34sec4429.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h44min11sec4177.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h44min13sec1715.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h44min44sec1940.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h45min35sec3392.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-19_4h45min46sec2281.png"
+                    }
+                ]
+            }
+        }
+    ]
+}

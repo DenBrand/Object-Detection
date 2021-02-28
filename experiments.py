@@ -1,9 +1,10 @@
-import cv2
+#import cv2
 import os
 from os.path import join
 from os import listdir
 import json
 import shutil
+from copy import deepcopy
 from random import randrange
 from typing import Tuple, List
 from itertools import product
@@ -45,20 +46,28 @@ from itertools import product
     
 #     pass
 
-def SplitData(img_dir: str,
+def SplitData(img_dir_1: str,
+              img_dir_2: str,
               cascade_dir: str,
               yolo_dir: str,
-              dest_img_dir: str,
+              dest_img_dir_1: str,
+              dest_img_dir_2: str,
+              suffix_of_set_2: str,
               dest_cascade_dir: str,
               dest_yolo_dir: str,
               test_set_size: int,
               chosen_imgs: str=None):
-    """Split the data set given by image directory, with cascade classifier
-    labels in json_dir and yolo labels in yolo_dir and put test_set_size
-    samples for the test set.
+    """Split the data sets given by img_dir_1 and img_dir_2, with cascade
+    classifier labels in cascade_dir and yolo labels in yolo_dir and chose
+    test_set_size samples for the test set. chosen_imgs specifies a file where
+    chosen images could be read in of instead. Images from img_dir_1 and 2 are
+    moved respectively into dest_img_dir_1 and 2. suffix_of_set_2 specifies,
+    what string must be added to images names in img_dir_1, to refer to their
+    counterpart in img_dir_2.
     
     Keyword arguments:
-    img_dir -- the path to the directory the images are in
+    img_dir_1 -- the path to the directory the images from set 1 are in
+    img_dir_2 -- teh path to the directory the images from set 2 are in
     cascade_dir -- the path to the directory, containing jsons labeling data
     for the cascade classifier
     yolo_dir -- the path to the directory containing the yolo labels
@@ -66,11 +75,11 @@ def SplitData(img_dir: str,
     stored
     test_set_size -- number of samples for the test data set
     chosen_imgs -- if specified, images in this txt will be chosen, instead of
-    randomly picking test_set_size elemets out of img_dir directory
+    randomly picking test_set_size elements out of img_dir_1 directory
     """
     
     # get file names, filter wrong out
-    img_list = [img for img in listdir(img_dir) if img[-4:] == '.png']
+    img_list = [img for img in listdir(img_dir_1) if img[-4:] == '.png']
     json_list = [json for json in listdir(cascade_dir) if json[-5:] == '.json']
     
     assert test_set_size < len(img_list), 'you need training to data to '
@@ -86,8 +95,6 @@ def SplitData(img_dir: str,
         # load test data samples according to chosen_imgs
         with open(chosen_imgs, 'r') as chosen_file:
             test_set_imgs = [line.replace('\n', '') for line in chosen_file]
-    # DEBUG:
-    test_set_imgs.sort()
     
     # get run_data copy them into thest_set_data and delete chosen images
     os.makedirs(dest_cascade_dir, exist_ok=True)
@@ -96,9 +103,10 @@ def SplitData(img_dir: str,
         """orig_or_new -- True -> handle source data
         False -> handle destination data
         """
-            
+        
         for json_name in json_list:
-            shutil.copy(join(cascade_dir, json_name), dest_cascade_dir)
+            if orig_or_new:
+                shutil.copy(join(cascade_dir, json_name), dest_cascade_dir)
             
             # specity json_path
             json_path = None
@@ -113,63 +121,40 @@ def SplitData(img_dir: str,
                 
             def RemoveEntriesHelper():
                 for run_data in data['runData']:
-                    for combo in product(('cubes', 'balls'),
+                    for detec_cls, label_type in product(('cubes', 'balls'),
                                          ('positives', 'negatives')):
-                        for entry in run_data[combo[0]][combo[1]]:
+                        current_block = run_data[detec_cls][label_type]
+                        for entry in reversed(current_block):
                             if orig_or_new:
-                                if entry['path'].replace(label_type + '\\', '')
-                                in test_set_imgs:
-                                    run_data[combo[0]][combo[1]].remove(entry)
+                                if entry['path'].replace(label_type+'\\', '') \
+                                    in test_set_imgs:
+                                    current_block.remove(entry)
                             else:
-                                if entry['path'].replace(label_type + '\\', '')
-                                not in test_set_imgs:
-                                    run_data[combo[0]][combo[1]].remove(entry)
+                                if entry['path'].replace(label_type+'\\', '') \
+                                    not in test_set_imgs:
+                                    current_block.remove(entry)
             RemoveEntriesHelper()
-                                
+            
             # write back
             with open(join(json_path, json_name), 'w') as json_file:
                 json.dump(data, json_file, indent=4)
                 
     RemoveEntries(True)
     RemoveEntries(False)
-        
-        # with open(join(cascade_dir, json_name), 'r+') as json_file:
-        #     data = json.load(json_file)
-        #     def RemoveEntriesHelper(detec_cls: str, label_type: str):
-        #         for run_data in data['runData']:
-        #             for entry in run_data[combo[0]][combo[1]]:
-        #                 if entry['path'].replace(label_type + '\\', '') \
-        #                 in test_set_imgs:
-        #                     run_data[combo[0]][combo[1]].remove(entry)
-        #     RemoveEntriesHelper('cubes', 'positives')
-        #     RemoveEntriesHelper('cubes', 'negatives')
-        #     RemoveEntriesHelper('balls', 'positives')
-        #     RemoveEntriesHelper('balls', 'negatives')
-
-        #     # write back
-        #     json.dump(data, json_file, indent=4)
-    
-        # with open(join(dest_cascade_dir, json_name), 'r+') as json_file:
-        #     data = json.load(json_file)
-        #     def RemoveEntriesHelper(detec_cls: str, label_type: str):
-        #         for run_data in data['runData']:
-        #             for entry in run_data[combo[0]][combo[1]]:
-        #                 if entry['path'].replace(label_type + '\\', '') \
-        #                 not in test_set_images:
-        #                     run_data[combo[0]][combo[1]].remove(entry)
-        #     RemoveEntriesHelper('cubes', 'positives')
-        #     RemoveEntriesHelper('cubes', 'negatives')
-        #     RemoveEntriesHelper('balls', 'positives')
-        #     RemoveEntriesHelper('balls', 'negatives')
-            
-        #     json.dump(data, json_file, indent=4)
             
     # move files
     for img in test_set_imgs:
-        # move image -> test_set_dir
-        os.makedirs(dest_img_dir, exist_ok=True)
-        src = join(img_dir, img)
-        dest = join(dest_img_dir, img)
+        # move image -> dest_img_dir_1
+        os.makedirs(dest_img_dir_1, exist_ok=True)
+        src = join(img_dir_1, img)
+        dest = join(dest_img_dir_1, img)
+        os.rename(src, dest)
+        
+        # move counterpart image -> dest_img_dir_2
+        os.makedirs(dest_img_dir_2, exist_ok=True)
+        src = join(img_dir_2, img.replace('.png', suffix_of_set_2 + '.png'))
+        dest = join(dest_img_dir_2, img.replace('.png',
+                                                suffix_of_set_2 + '.png'))
         os.rename(src, dest)
         
         # move yolo label -> test_set_dir
@@ -202,21 +187,23 @@ def SplitDataByPercentage(img_dir: str,
               size,
               chosen_imgs)
 
-if __name__ == '__main__':
-    # Test:
-    SplitData(r'experiment_01-arbitrary_colors\training_data\model_fixed\raw_data',
-              r'experiment_01-arbitrary_colors\training_data\cascade_JSONs',
-              r'experiment_01-arbitrary_colors\training_data\yolov5_labels',
-              r'experiment_01-arbitrary_colors\test_data\images',
-              r'experiment_01-arbitrary_colors\test_data\cascade_labels',
-              r'experiment_01-arbitrary_colors\test_data\yolo_labels',
-              400)
-    
-    # Test 2:
-    # SplitData(r'experiment_01-arbitrary_colors\ground_truth_collector_v1.8_win\training_data\standard\yolo_imgs',
-    #           r'experiment_01-arbitrary_colors\ground_truth_collector_v1.8_win\training_data\standard\cascade_labels',
-    #           r'experiment_01-arbitrary_colors\ground_truth_collector_v1.8_win\training_data\standard\yolo_labels',
-    #           r'experiment_01-arbitrary_colors\ground_truth_collector_v1.8_win\training_data\standard\dest_imgs',
-    #           r'experiment_01-arbitrary_colors\ground_truth_collector_v1.8_win\training_data\standard\dest_cascade_labels',
-    #           r'experiment_01-arbitrary_colors\ground_truth_collector_v1.8_win\training_data\standard\dest_yolo_labels',
-    #           3)
+if __name__ == '__main__':    
+    # Split for experiment 1:
+    # SplitData(join('experiment_01-arbitrary_colors', 'training_data',
+    #                'model_fixed', 'raw_data'),
+    #           join('experiment_01-arbitrary_colors', 'training_data',
+    #                'model_arbitrary', 'raw_data'),
+    #           join('experiment_01-arbitrary_colors', 'training_data',
+    #                'cascade_JSONs'),
+    #           join('experiment_01-arbitrary_colors', 'training_data',
+    #                'yolov5_labels'),
+    #           join('experiment_01-arbitrary_colors', 'test_data',
+    #                'images_fixed'),
+    #           join('experiment_01-arbitrary_colors', 'test_data',
+    #                'images_arbitrary'),
+    #           '_randomized_colors',
+    #           join('experiment_01-arbitrary_colors', 'test_data',
+    #                'cascade_labels'),
+    #           join('experiment_01-arbitrary_colors', 'test_data',
+    #                'yolo_labels'),
+    #           400)
