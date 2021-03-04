@@ -268,7 +268,10 @@ def FilterOutPositivesWithTooSmallSize(min_size: int, detectable_class_id: int):
 
             file.write(line)
 
-def DetectAndShow(model_path: str, imgs_dir: str, image_name: str, results_directory: str=None):
+def DetectAndShow(model_path: str,
+                  imgs_dir: str,
+                  image_name: str,
+                  results_directory:str=None):
     """Use model_path to detect objects on the image/images image_name lying
     in imgs_dir. Save results in results_directory if given, otherwise show
     them immediately.
@@ -282,12 +285,11 @@ def DetectAndShow(model_path: str, imgs_dir: str, image_name: str, results_direc
     detection on, or a path to a TXT file in imgs_dir, which contains a list
     of names of image files.
     results_directory -- the directory to save results in. If not given,
-    results will be shown in the screen. (default: None)
+    results will be shown on the screen. (default: None)
     """
     
     image_paths = []
     if image_name.endswith('.txt'):
-        
         # read in image name and build paths to them
         with open(image_name, 'r') as file:
             lines = file.readlines()
@@ -308,11 +310,11 @@ def DetectAndShow(model_path: str, imgs_dir: str, image_name: str, results_direc
         # load an image and detect objects
         img = cv2.imread(path)
         rectangles = classifier.detectMultiScale(img)
-
+        
         # draw detection results onto original image
         for x, y, w, h in rectangles:
             img = cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 1)
-
+            
         if results_directory == None:
             # display the image
             cv2.imshow('Matches', img)
@@ -332,6 +334,3 @@ def DetectAndShow(model_path: str, imgs_dir: str, image_name: str, results_direc
             filename = filename.replace('.png', '_result.png')
 
             cv2.imwrite(os.path.join(results_directory, filename), img)
-
-if __name__ == '__main__':
-    pass

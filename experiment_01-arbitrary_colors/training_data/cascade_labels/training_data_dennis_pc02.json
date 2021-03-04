@@ -16,21 +16,21 @@
                         }
                     },
                     {
-                        "path": "positives\\2021-2-18_22h51min5sec5704.png",
+                        "path": "positives\\2021-2-18_22h51min0sec2270.png",
                         "boxEntry": {
-                            "x": 239,
-                            "y": 71,
-                            "w": 43,
-                            "h": 41
+                            "x": 67,
+                            "y": 118,
+                            "w": 124,
+                            "h": 138
                         }
                     },
                     {
-                        "path": "positives\\2021-2-18_22h51min37sec93.png",
+                        "path": "positives\\2021-2-18_22h51min2sec8808.png",
                         "boxEntry": {
-                            "x": 138,
-                            "y": 23,
-                            "w": 66,
-                            "h": 75
+                            "x": 179,
+                            "y": 116,
+                            "w": 88,
+                            "h": 103
                         }
                     },
                     {
@@ -67,51 +67,6 @@
                             "y": 74,
                             "w": 115,
                             "h": 125
-                        }
-                    },
-                    {
-                        "path": "positives\\2021-2-18_22h52min16sec4039.png",
-                        "boxEntry": {
-                            "x": 121,
-                            "y": 60,
-                            "w": 125,
-                            "h": 116
-                        }
-                    },
-                    {
-                        "path": "positives\\2021-2-18_22h52min20sec5431.png",
-                        "boxEntry": {
-                            "x": 106,
-                            "y": 62,
-                            "w": 65,
-                            "h": 71
-                        }
-                    },
-                    {
-                        "path": "positives\\2021-2-18_22h53min24sec9302.png",
-                        "boxEntry": {
-                            "x": 72,
-                            "y": 121,
-                            "w": 48,
-                            "h": 57
-                        }
-                    },
-                    {
-                        "path": "positives\\2021-2-18_22h53min24sec9302.png",
-                        "boxEntry": {
-                            "x": 180,
-                            "y": 25,
-                            "w": 40,
-                            "h": 44
-                        }
-                    },
-                    {
-                        "path": "positives\\2021-2-18_22h53min35sec949.png",
-                        "boxEntry": {
-                            "x": 66,
-                            "y": 37,
-                            "w": 254,
-                            "h": 283
                         }
                     },
                     {
@@ -160,6 +115,24 @@
                         }
                     },
                     {
+                        "path": "positives\\2021-2-18_22h55min21sec2785.png",
+                        "boxEntry": {
+                            "x": 164,
+                            "y": 51,
+                            "w": 149,
+                            "h": 136
+                        }
+                    },
+                    {
+                        "path": "positives\\2021-2-18_22h55min21sec2785.png",
+                        "boxEntry": {
+                            "x": 0,
+                            "y": 82,
+                            "w": 164,
+                            "h": 158
+                        }
+                    },
+                    {
                         "path": "positives\\2021-2-18_22h55min43sec7703.png",
                         "boxEntry": {
                             "x": 100,
@@ -171,19 +144,16 @@
                 ],
                 "negatives": [
                     {
-                        "path": "negatives\\2021-2-18_22h50min54sec9694.png"
-                    },
-                    {
                         "path": "negatives\\2021-2-18_22h51min34sec3470.png"
                     },
                     {
                         "path": "negatives\\2021-2-18_22h51min48sec942.png"
                     },
                     {
-                        "path": "negatives\\2021-2-18_22h52min26sec4067.png"
+                        "path": "negatives\\2021-2-18_22h52min5sec1257.png"
                     },
                     {
-                        "path": "negatives\\2021-2-18_22h53min15sec6208.png"
+                        "path": "negatives\\2021-2-18_22h53min4sec2576.png"
                     },
                     {
                         "path": "negatives\\2021-2-18_22h53min37sec409.png"
@@ -211,24 +181,6 @@
                         }
                     },
                     {
-                        "path": "positives\\2021-2-18_22h50min54sec9694.png",
-                        "boxEntry": {
-                            "x": 174,
-                            "y": 95,
-                            "w": 54,
-                            "h": 55
-                        }
-                    },
-                    {
-                        "path": "positives\\2021-2-18_22h51min5sec5704.png",
-                        "boxEntry": {
-                            "x": 192,
-                            "y": 166,
-                            "w": 85,
-                            "h": 83
-                        }
-                    },
-                    {
                         "path": "positives\\2021-2-18_22h51min34sec3470.png",
                         "boxEntry": {
                             "x": 155,
@@ -247,21 +199,21 @@
                         }
                     },
                     {
-                        "path": "positives\\2021-2-18_22h52min26sec4067.png",
+                        "path": "positives\\2021-2-18_22h52min5sec1257.png",
                         "boxEntry": {
-                            "x": 149,
-                            "y": 85,
-                            "w": 46,
-                            "h": 46
+                            "x": 151,
+                            "y": 52,
+                            "w": 55,
+                            "h": 54
                         }
                     },
                     {
-                        "path": "positives\\2021-2-18_22h53min15sec6208.png",
+                        "path": "positives\\2021-2-18_22h53min4sec2576.png",
                         "boxEntry": {
-                            "x": 42,
-                            "y": 29,
-                            "w": 116,
-                            "h": 117
+                            "x": 35,
+                            "y": 48,
+                            "w": 64,
+                            "h": 66
                         }
                     },
                     {
@@ -285,7 +237,10 @@
                 ],
                 "negatives": [
                     {
-                        "path": "negatives\\2021-2-18_22h51min37sec93.png"
+                        "path": "negatives\\2021-2-18_22h51min0sec2270.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-18_22h51min2sec8808.png"
                     },
                     {
                         "path": "negatives\\2021-2-18_22h51min52sec3934.png"
@@ -300,18 +255,6 @@
                         "path": "negatives\\2021-2-18_22h52min14sec4673.png"
                     },
                     {
-                        "path": "negatives\\2021-2-18_22h52min16sec4039.png"
-                    },
-                    {
-                        "path": "negatives\\2021-2-18_22h52min20sec5431.png"
-                    },
-                    {
-                        "path": "negatives\\2021-2-18_22h53min24sec9302.png"
-                    },
-                    {
-                        "path": "negatives\\2021-2-18_22h53min35sec949.png"
-                    },
-                    {
                         "path": "negatives\\2021-2-18_22h53min39sec5823.png"
                     },
                     {
@@ -322,6 +265,9 @@
                     },
                     {
                         "path": "negatives\\2021-2-18_22h55min4sec4138.png"
+                    },
+                    {
+                        "path": "negatives\\2021-2-18_22h55min21sec2785.png"
                     }
                 ]
             }
