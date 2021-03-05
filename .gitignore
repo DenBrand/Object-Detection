@@ -141,3 +141,6 @@ Cascade_Classifier
 
 # This zip is too big
 experiment_01-FETCHED.zip
+
+# Also contains yolov5 repo
+yolov5_from_tesla
