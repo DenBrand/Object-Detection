@@ -23,7 +23,7 @@ def LoadYolo(weights, cfg):
     return detector, output_layers
 
 def DetectYolo(img, detector, output_layers, bx, by):
-    """Perform yolo detection on img and return the outputs
+    """REWRITE --- openCV can't handle .pt file --- Perform yolo detection on img and return the outputs
     
     Keyword arguments:
     img -- the image object (opencv) to perform detection on
@@ -42,6 +42,31 @@ def DetectYolo(img, detector, output_layers, bx, by):
     outputs = detector.forward(output_layers)
 
     return outputs
+
+def DetectCascade(cascade, imgs, minimalObjectSize):
+    """Run detection with cascade classifier on images and return bounding
+    boxes and confidences.
+    
+    Keyword arguments:
+    cascade -- cascade model (already loaded from XML)
+    imgs -- list of paths to test images
+    minimalObjectSize -- minimal width or height of present objects
+    """
+    
+    all_preds = []
+    for img in imgs:
+        img_loaded = cv2.imread(img)
+        
+        # one file for each image, listing preds like:
+        # <class_id> <conf> <left> <top> <width> <height> (all absolute)
+        objects, rejectLevels, levelWeights = cascade.detectMultiScale3(img_loaded,
+                                                                        scaleFactor=1.1,
+                                                                        minNeighbors=5,
+                                                                        minSize=(30, 30),
+                                                                        flags = cv2.CASCADE_SCALE_IMAGE,
+                                                                        outputRejectLevels = True)
+        
+        img_name = img[img.rfind('/')+1:]
 
 def RunDetection(image_set_path,
             image_names,
@@ -71,6 +96,7 @@ def RunDetection(image_set_path,
     return cascade_rects, yolo_rects
 
 def LoadCascadeGroundTruth(cascade_truth):
+    """DEPRECATED"""
     # get file names
     json_paths = listdir(cascade_truth)
     
@@ -89,6 +115,7 @@ def LoadCascadeGroundTruth(cascade_truth):
     return cubes_positives, balls_positives
 
 def LoadYoloGroundTruth(yolo_truth):
+    """DEPRECATED"""
     # get file names
     label_names = listdir(yolo_truth)
     
