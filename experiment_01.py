@@ -69,10 +69,3 @@ if __name__ == '__main__':
     # read in ground-truth data for yolov5
     yolo_pos = LoadYoloGroundTruth(args.yoloTruth)
     
-    
-    
-    
-    
-    
-    
-    
