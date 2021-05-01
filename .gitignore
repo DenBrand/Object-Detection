@@ -144,3 +144,12 @@ experiment_01-FETCHED.zip
 
 # Also contains yolov5 repo
 yolov5_from_tesla
+
+# mAP calculator
+review_object_detection_metrics
+
+# ViZDoom Project
+Object-Detection-with-ViZDoom
+
+# Ground-Truth-Collector
+Ground-Truth-Collector
