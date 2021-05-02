@@ -191,7 +191,7 @@ def SplitData(img_dir_1: str,
         with open(chosen_imgs, 'r') as chosen_file:
             test_set_imgs = [line.replace('\n', '') for line in chosen_file]
     
-    # get run_data copy them into thest_set_data and delete chosen images
+    # get run_data copy them into the test_set_data and delete chosen images
     os.makedirs(dest_cascade_dir, exist_ok=True)
         
     def RemoveEntries(orig_or_new: bool):
@@ -203,7 +203,7 @@ def SplitData(img_dir_1: str,
             if orig_or_new:
                 shutil.copy(join(cascade_dir, json_name), dest_cascade_dir)
             
-            # specity json_path
+            # specify json_path
             json_path = None
             if orig_or_new:
                 json_path = cascade_dir
