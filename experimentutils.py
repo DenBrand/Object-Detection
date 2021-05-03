@@ -151,7 +151,7 @@ def SplitData(img_dir_1: str,
               test_set_size: int,
               chosen_imgs: str=None):
     """Split the data sets given by img_dir_1 and img_dir_2, with cascade
-    classifier labels in cascade_dir and yolo labels in yolo_dir and chose
+    classifier labels in cascade_dir and yolo labels in yolo_dir and choose
     test_set_size samples for the test set. chosen_imgs specifies a file where
     chosen images could be read in of instead. Images from img_dir_1 and 2 are
     moved respectively into dest_img_dir_1 and 2. suffix_of_set_2 specifies,
