@@ -44,14 +44,14 @@ def DetectYolo(img, detector, output_layers, bx, by):
     return outputs
 
 def DetectCascade(cascade, imgs, minimalObjectSize):
-    """Run detection with cascade classifier on images and return bounding
+    """DEPRECATED --- Run detection with cascade classifier on images and return bounding
     boxes and confidences.
     
     Keyword arguments:
     cascade -- cascade model (already loaded from XML)
     imgs -- list of paths to test images
     minimalObjectSize -- minimal width or height of present objects
-    """
+    
     
     all_preds = []
     for img in imgs:
@@ -67,6 +67,7 @@ def DetectCascade(cascade, imgs, minimalObjectSize):
                                                                         outputRejectLevels = True)
         
         img_name = img[img.rfind('/')+1:]
+        """
 
 def RunDetection(image_set_path,
             image_names,
@@ -176,7 +177,7 @@ def SplitData(img_dir_1: str,
     img_list_2 = [img for img in listdir(img_dir_2) if img[-4:] == '.png']
     json_list = [json for json in listdir(cascade_dir) if json[-5:] == '.json']
     
-    assert len(img_list_1 == img_list_2), ''
+    assert len(img_list_1) == len(img_list_2), ''
     assert test_set_size < len(img_list_1), 'you need training data to '
     'train a model'
     
