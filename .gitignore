@@ -133,6 +133,7 @@ Cascade_Classifier
 
 # experiment folders
 experiments
+experiment_01-arbitrary_colors
 
 # This zip is too big
 experiment_01-FETCHED.zip
